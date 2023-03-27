@@ -1,15 +1,16 @@
 const express = require("express");
 const app = express();
 const { getAllCategories } = require("./controllers/categories.controller.js");
-// const { handleError } = require("./controllers/errorHandlingController.js")
+const { errorHandle } = require("./controllers/errorHandling.controller.js")
 
 app.use(express.json());
 
 
 app.get("/api/categories", getAllCategories)
 
-// app.use(handleError)
-//test
+app.get("*", (req, res) => res.status(404).send("Invalid URL"))
+
+app.use(errorHandle)
 
 app.listen(9090, (err) => {
     if(err) console.log(err);

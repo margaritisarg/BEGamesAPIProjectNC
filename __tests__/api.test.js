@@ -23,5 +23,13 @@ describe("GET API - categories", () => {
                     });
                 });
             });
-    })
+    });
+    test("404: get a list of all categories BUT *categoriezz* is misspelt", () => {
+        return request(app)
+            .get("/api/categoriezz")
+            .expect(404)
+            .then(({text}) => {
+                expect(text).toBe("Invalid URL")
+            });
+    });
 });
