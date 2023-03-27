@@ -9,6 +9,7 @@ app.use(express.json());
 app.get("/api/categories", getAllCategories)
 
 // app.use(handleError)
+//test
 
 app.listen(9090, (err) => {
     if(err) console.log(err);
