@@ -15,8 +15,9 @@ describe("GET API - categories", () => {
             .get("/api/categories")
             .expect(200)
             .then(({body}) => {
-                expect(body).toHaveLength(testData.categoryData.length);
-                body.forEach(entry => {
+                const arrayOfCategories = body.AllCategories; 
+                expect(arrayOfCategories).toHaveLength(testData.categoryData.length);
+                arrayOfCategories.forEach(entry => {
                     expect(entry).toMatchObject({
                         slug: expect.any(String),
                         description: expect.any(String)
@@ -24,12 +25,17 @@ describe("GET API - categories", () => {
                 });
             });
     });
-    test("404: get a list of all categories BUT *categoriezz* is misspelt", () => {
-        return request(app)
-            .get("/api/categoriezz")
-            .expect(404)
-            .then(({text}) => {
-                expect(text).toBe("Invalid URL")
-            });
+});
+
+describe("404: Ensure correct response when 404 occurs", () => {
+    test("categories - /api/categoriezz missplet", () => {
+    return request(app)
+        .get("/api/categoriezz")
+        .expect(404)
+        .then(({text}) => {
+            const result = JSON.parse(text)
+            expect(result).toEqual({msg: "Invalid URL"})
+            expect(result.msg).toBe("Invalid URL")
+        });
     });
 });
