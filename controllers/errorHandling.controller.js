@@ -1,12 +1,16 @@
 
-exports.errorHandle = (err, req, res, next) => {
-    console.log("In errorHandle")
-    
+exports.errorHandle = (err, req, res, next) => {   
     if(err.status && err.msg){
-        console.log("In IF block of error handle.");
         res.status(err.status).send({msg: err.msg});
     }else{
-        console.log("In ELSE block of error handle.");
         next(err)
     }
+}
+
+exports.errorPlaceHolder = (err, req, res) => {
+    res.status(err.status).send({msg: err.msg});
+};
+
+exports.invalidURL = (req, res) => {
+    res.status(404).send({msg: "Invalid URL"})
 }
