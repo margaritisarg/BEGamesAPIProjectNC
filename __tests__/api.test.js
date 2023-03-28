@@ -41,14 +41,40 @@ describe("GET API - categories", () => {
     });
 });
 
+describe("GET API - all reviews", () => {
+    test("200: get all reviews", () => {
+        return request(app)
+            .get("/api/reviews")
+            .expect(200)
+            .then(({body}) => {
+                const reviewsResult = body.allReviews;
+                expect(reviewsResult).toHaveLength(testData.reviewData.length)
+                reviewsResult.forEach(entry => {
+                    expect(entry).toMatchObject({
+                        comment_count: expect.any(Number),
+                        title: expect.any(String),
+                        owner: expect.any(String),
+                        review_id: expect.any(Number),
+                        category: expect.any(String),
+                        review_img_url: expect.any(String),
+                        created_at: expect.any(String),
+                        votes: expect.any(Number),
+                        designer: expect.any(String),
+                    });
+                });
+            });
+    });
+});
+
 describe("GET API - reviews by ID", () => {
-    test.only("200: get a single review by ID", () => {
+    test("200: get a single review by ID", () => {
         return request(app)
             .get("/api/reviews/3")
             .expect(200)
             .then(({body}) => {
-                expect(body).toHaveLength(1);
-                body.forEach(entry => {
+                const reviewsResult = body.ReviewsByID;
+                expect(reviewsResult).toHaveLength(1);
+                reviewsResult.forEach(entry => {
                     expect(entry).toMatchObject({
                         review_id: expect.any(Number),
                         title: expect.any(String),
