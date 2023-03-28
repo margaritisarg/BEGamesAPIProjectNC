@@ -8,7 +8,7 @@ exports.errorHandle = (err, req, res, next) => {
 }
 
 exports.errorPlaceHolder = (err, req, res) => {
-    res.status(err.status).send({msg: err.msg});
+    res.status(err.status).send("Error placeholder");
 };
 
 exports.invalidURL = (req, res) => {
