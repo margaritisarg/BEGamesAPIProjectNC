@@ -66,6 +66,65 @@ describe("GET API - all reviews", () => {
     });
 });
 
+describe("POST API - insert a comment row using review_id and author FK", () => {
+    test("201: sucessfully insert a new comment in the comments table", () => {
+        const dummyData = {
+            "author": "bainesface",
+            "body": "This is some body text, hi2",
+            "review_id": 2
+        }      
+        return request(app)
+            .post("/api/reviews/2/comments")
+            .send(dummyData)
+            .expect(201)
+            .then(({body}) => {
+                expect(body).toEqual({status:'Inserted successfully', rowCount:1});
+            })
+    })
+    test("400: valid data to post but review_id in post string incorrect data type", () => {
+        const dummyData = {
+            "author": "bainesface",
+            "body": "Nothing...",
+            "review_id": 1
+        }
+        return request(app)
+            .post("/api/reviews/notANumber/comments")
+            .send(dummyData)
+            .expect(400)
+            .then(({body})=>{
+                expect(body).toEqual({msg: "400 - Bad input"})
+            })
+    })
+    test("400: Invalid data to post - incorrect author key", () => {
+        const dummyData = {
+            "author": "FAKE_bainesface_FAKE",
+            "body": "Nothing...",
+            "review_id": 1
+        }
+        return request(app)
+            .post("/api/reviews/2/comments")
+            .send(dummyData)
+            .expect(400)
+            .then(({body})=>{
+                expect(body).toEqual({post_error: "author does not have a record of: 'FAKE_bainesface_FAKE' in its corresponding table"})
+            })
+    })
+    test("400: Invalid data to post - incorrect review_id key", () => {
+        const dummyData = {
+            "author": "bainesface",
+            "body": "Nothing...",
+            "review_id": 1
+        }
+        return request(app)
+            .post("/api/reviews/2222/comments")
+            .send(dummyData)
+            .expect(400)
+            .then(({body})=>{
+                expect(body).toEqual({post_error: "review does not have a record of: '2222' in its corresponding table"})
+            })
+    })
+})
+
 describe("GET API - get all comments by review ID", () => {
     test("200: get all comments from a single review ID", () => {
         return request(app)
