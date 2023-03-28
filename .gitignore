@@ -1,3 +1,5 @@
 node_modules
 .env.*
 .random
+play.sql
+output.txt
