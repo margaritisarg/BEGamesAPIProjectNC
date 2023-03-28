@@ -66,6 +66,64 @@ describe("GET API - all reviews", () => {
     });
 });
 
+describe("GET API - get all comments by review ID", () => {
+    test("200: get all comments from a single review ID", () => {
+        return request(app)
+            .get("/api/reviews/2/comments")
+            .expect(200)
+            .then(({body}) => {
+                const commentsByReviewID = body.commentsByReviewID;
+                expect(commentsByReviewID).toHaveLength(3)
+                commentsByReviewID.forEach(entry => {
+                    expect(entry).toMatchObject({
+                        comment_id: expect.any(Number),
+                        body: expect.any(String),
+                        review_id: expect.any(Number),
+                        author: expect.any(String),
+                        votes: expect.any(Number),
+                        created_at: expect.any(String),
+                    })
+                })
+            })
+    })
+    test("404: no comments found from this review ID", () => {
+        return request(app)
+            .get("/api/reviews/22323/comments")
+            .expect(404)
+            .then(({text}) => {
+                const result = JSON.parse(text)
+                expect(result).toEqual({msg: "404 - No content found"})
+            })
+    })
+    test("400: no comments found from an invalid input", () => {
+        return request(app)
+            .get("/api/reviews/asasa/comments")
+            .expect(400)
+            .then(({text}) => {
+                const result = JSON.parse(text)
+                expect(result).toEqual({msg: "400 - Bad input"})
+            })
+    })
+    test("400: no comments found from an invalid input", () => {
+        return request(app)
+            .get("/api/reviews/12121asasa/comments")
+            .expect(400)
+            .then(({text}) => {
+                const result = JSON.parse(text)
+                expect(result).toEqual({msg: "400 - Bad input"})
+            })
+    })
+    test("400: no comments found from an invalid input", () => {
+        return request(app)
+            .get("/api/reviews/12++/comments")
+            .expect(400)
+            .then(({text}) => {
+                const result = JSON.parse(text)
+                expect(result).toEqual({msg: "400 - Bad input"})
+            })
+    })
+});
+
 describe("GET API - reviews by ID", () => {
     test("200: get a single review by ID", () => {
         return request(app)

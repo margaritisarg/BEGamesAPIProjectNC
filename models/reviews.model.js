@@ -1,5 +1,26 @@
 const db = require("../db/connection.js")
 
+exports.fetchCommentsByReviewID = (reviewID) => {
+    if(reviewID.match(/^\d+$/)) {
+        const sql = 
+        `
+            SELECT * FROM comments 
+                WHERE review_id = $1;
+        `;
+
+        return db.query(sql, [reviewID])
+            .then(result => {
+                if(result.rowCount === 0) {
+                    return Promise.reject({status: 404, msg: "404 - No content found"});            
+                }else{
+                    return result.rows;          
+                }
+            });
+    }else{
+        return Promise.reject({status: 400, msg: "400 - Bad input"});            
+    }
+};
+
 exports.fetchReviews = () => {
     const sql = 
     `
@@ -22,14 +43,14 @@ exports.fetchReviews = () => {
         });
 }
 
-exports.fetchReviewByID = (query) => {
-    
-    let sql = "SELECT * FROM reviews WHERE review_id = ";
-
-    if(Number.isInteger(parseInt(query))) {
-        sql += `${query};`
+exports.fetchReviewByID = (reviewID) => {
+    if(reviewID.match(/^\d+$/)) {
+        const sql = 
+        `
+            SELECT * FROM reviews WHERE review_id = $1;
+        `;
       
-        return db.query(sql)
+        return db.query(sql, [reviewID])
             .then(result => {
                 if(result.rowCount === 0) {
                     return Promise.reject({status: 404, msg: "404 - No content found"});            
