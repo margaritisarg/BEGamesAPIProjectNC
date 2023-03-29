@@ -1,4 +1,14 @@
-const { fetchReviewByID, fetchReviews, fetchCommentsByReviewID } = require("../models/reviews.model.js");
+const { 
+    fetchReviewByID, fetchReviews, fetchCommentsByReviewID, insertCommentWithID 
+} = require("../models/reviews.model.js");
+
+exports.postCommentWithReviewID = (req, res, next) => {
+    insertCommentWithID(req)
+        .then((data) => {
+            res.status(201).send({status: "Inserted successfully", rowCount: data.rowCount})
+        })
+        .catch(err => next(err));
+}
 
 exports.getCommentsByReviewID = (req, res, next) => {
     fetchCommentsByReviewID(req.params.review_id)

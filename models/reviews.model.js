@@ -1,5 +1,24 @@
 const db = require("../db/connection.js")
 
+exports.insertCommentWithID = (req) => {
+    if((req.params.review_id).match(/^\d+$/)){
+        const insertDataArray = [];
+        insertDataArray.push(req.body.body)
+        insertDataArray.push(parseInt(req.params.review_id))
+        insertDataArray.push(req.body.author)
+        
+        const sql = 
+        `
+            INSERT INTO comments
+                (body, review_id, author)
+            VALUES($1, $2, $3 );
+        `;
+        return db.query(sql, insertDataArray);
+    }else{
+        return Promise.reject({status: 400, msg: "400 - Bad input"});            
+    }
+}
+
 exports.fetchCommentsByReviewID = (reviewID) => {
     if(reviewID.match(/^\d+$/)) {
         const sql = 
