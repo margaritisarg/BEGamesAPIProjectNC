@@ -125,6 +125,19 @@ describe("POST API - insert a comment row using review_id and author FK", () => 
     })
 })
 
+// describe("PATCH APT - update reviews table, column votes by input", () => {
+//     const dummyData = {"votes": 5}
+//     test("200: update votes from an object inputted", () => {
+//         return request(app)
+//             .get("/api/reviews/2")
+//             .send(dummyData)
+//             .expect(200)
+//             .then((body) => {
+//                 console.log(body)
+//             })
+//     })
+// })
+
 describe("GET API - get all comments by review ID", () => {
     test("200: get all comments from a single review ID", () => {
         return request(app)

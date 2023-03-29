@@ -1,6 +1,16 @@
 const { 
-    fetchReviewByID, fetchReviews, fetchCommentsByReviewID, insertCommentWithID 
+    fetchReviewByID, fetchReviews, fetchCommentsByReviewID, insertCommentWithID,
+    updateVotesWithReviewID 
 } = require("../models/reviews.model.js");
+
+
+exports.patchVotesByReviewID = (req, res, next) => {
+    updateVotesWithReviewID(req)
+        .then((data) => {
+            res.status(200).send(data)
+        })
+        .catch(err => next(err));
+}
 
 exports.postCommentWithReviewID = (req, res, next) => {
     insertCommentWithID(req)
