@@ -30,7 +30,7 @@ exports.fetchCommentsByReviewID = (reviewID) => {
         return db.query(sql, [reviewID])
             .then(result => {
                 if(result.rowCount === 0) {
-                    return Promise.reject({status: 404, msg: "404 - No content found"});            
+                    return Promise.reject({status: 204, msg: "204 - No content found"});            
                 }else{
                     return result.rows;          
                 }
