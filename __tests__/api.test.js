@@ -145,13 +145,12 @@ describe("GET API - get all comments by review ID", () => {
                 })
             })
     })
-    test("404: no comments found from this review ID", () => {
+    test("204: no comments found from this review ID", () => {
         return request(app)
             .get("/api/reviews/22323/comments")
-            .expect(404)
-            .then(({text}) => {
-                const result = JSON.parse(text)
-                expect(result).toEqual({msg: "404 - No content found"})
+            .expect(204)
+            .then(({res}) => {
+                expect(res.statusMessage).toBe("No Content")
             })
     })
     test("400: no comments found from an invalid input", () => {
