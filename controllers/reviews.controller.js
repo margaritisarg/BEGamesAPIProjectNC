@@ -15,7 +15,7 @@ exports.patchVotesByReviewID = (req, res, next) => {
 exports.postCommentWithReviewID = (req, res, next) => {
     insertCommentWithID(req)
         .then((data) => {
-            res.status(201).send({status: "Inserted successfully", rowCount: data.rowCount})
+            res.status(201).send(data)
         })
         .catch(err => next(err));
 }

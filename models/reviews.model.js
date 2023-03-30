@@ -25,22 +25,42 @@ exports.updateVotesWithReviewID = (req) => {
 }
 
 exports.insertCommentWithID = (req) => {
-    if((req.params.review_id).match(/^\d+$/)){
-        const insertDataArray = [];
-        insertDataArray.push(req.body.body)
-        insertDataArray.push(parseInt(req.params.review_id))
-        insertDataArray.push(req.body.author)
-        
-        const sql = 
-        `
-            INSERT INTO comments
-                (body, review_id, author)
-            VALUES($1, $2, $3 );
-        `;
-        return db.query(sql, insertDataArray);
-    }else{
-        return Promise.reject({status: 400, msg: "400 - Bad input"});            
+    const props = req.body;
+    
+    if(!props.username || !props.body) {
+        return Promise.reject({status: 400, msg: "400 - Bad input"});       
     }
+    for(const prop in props){
+        if(prop !== "username" && prop !== "body") {
+            return Promise.reject({status: 400, msg: "400 - Bad input"});
+        }  
+    }
+    const insertDataArray = [];
+    insertDataArray.push(props.username)
+    insertDataArray.push(props.body)
+    
+    const reviewID = req.params.review_id;
+    insertDataArray.push(reviewID)
+  
+    const sql = 
+    `
+        INSERT INTO comments
+            (author, body, review_id)
+        VALUES($1, $2, $3 );
+    `;
+    return db.query(sql, insertDataArray)
+        .then((result) => {
+            if(result.rowCount === 0){
+                return Promise.reject({status: 404, msg: "404 - No content found"});            
+            }else{
+                return {
+                    status: "Inserted successfully", 
+                    rowCount: result.rowCount, 
+                    comment: {username: props.username, body: props.body}
+                }
+            }
+        })
+        .catch(err => Promise.reject(err))
 }
 
 exports.fetchCommentsByReviewID = (reviewID) => {

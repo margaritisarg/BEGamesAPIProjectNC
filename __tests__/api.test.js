@@ -69,58 +69,102 @@ describe("GET API - all reviews", () => {
 describe("POST API - insert a comment row using review_id and author FK", () => {
     test("201: sucessfully insert a new comment in the comments table", () => {
         const dummyData = {
-            "author": "bainesface",
-            "body": "This is some body text, hi2",
-            "review_id": 2
+            "username": "bainesface",
+            "body": "This is some body text, hi2"
         }      
         return request(app)
             .post("/api/reviews/2/comments")
             .send(dummyData)
             .expect(201)
             .then(({body}) => {
-                expect(body).toEqual({status:'Inserted successfully', rowCount:1});
-            })
-    })
-    test("400: valid data to post but review_id in post string incorrect data type", () => {
+                const expected = {
+                    "status": "Inserted successfully",
+                    "rowCount": 1,
+                    "comment": {
+                        "username": "bainesface",
+                        "body": "This is some body text, hi2"
+                    }
+                };
+                expect(body).toEqual(expected);
+            });
+    });
+    test("400: invalid extra properties", () => {
         const dummyData = {
-            "author": "bainesface",
-            "body": "Nothing...",
-            "review_id": 1
-        }
+            "FAKEusername": "bainesface",
+            "body": "This is some body text, hi2",
+            "extra": "extra"
+        }      
         return request(app)
-            .post("/api/reviews/notANumber/comments")
+            .post("/api/reviews/2/comments")
+            .send(dummyData)
+            .expect(400)
+            .then(({body})=>{
+                expect(body).toEqual({msg: "400 - Bad input"})
+            })  
+    })
+    test("400: invalid props - fake username", () => {
+        const dummyData = {
+            "FAKEusername": "bainesface",
+            "body": "This is some body text, hi2"
+        }        
+        return request(app)
+            .post("/api/reviews/2/comments")
             .send(dummyData)
             .expect(400)
             .then(({body})=>{
                 expect(body).toEqual({msg: "400 - Bad input"})
             })
     })
-    test("400: Invalid data to post - incorrect author key", () => {
+    test("400: invalid props - fake body", () => {
         const dummyData = {
-            "author": "FAKE_bainesface_FAKE",
-            "body": "Nothing...",
-            "review_id": 1
-        }
+            "username": "bainesface",
+            "FAKEbody": "This is some body text, hi2"
+        }       
         return request(app)
             .post("/api/reviews/2/comments")
             .send(dummyData)
             .expect(400)
             .then(({body})=>{
-                expect(body).toEqual({post_error: "author does not have a record of: 'FAKE_bainesface_FAKE' in its corresponding table"})
+                expect(body).toEqual({msg: "400 - Bad input"})
             })
     })
-    test("400: Invalid data to post - incorrect review_id key", () => {
+    test("400: valid data to post but review_id in post string incorrect data type", () => {
         const dummyData = {
-            "author": "bainesface",
-            "body": "Nothing...",
-            "review_id": 1
+            "username": "bainesface",
+            "body": "Nothing..."
+        }
+        return request(app)
+            .post("/api/reviews/notANumber/comments")
+            .send(dummyData)
+            .expect(400)
+            .then((body)=>{
+                expect(body.body).toEqual({errorCode: "22P02", msg: "invalid syntax type"})
+            })
+    })
+    test("404: Invalid data to post - incorrect author key", () => {
+        const dummyData = {
+            "username": "FAKE_bainesface_FAKE",
+            "body": "Nothing..."
+        }
+        return request(app)
+            .post("/api/reviews/2/comments")
+            .send(dummyData)
+            .expect(404)
+            .then(({body})=>{
+                expect(body).toEqual({status: 404, msg: "FAKE_bainesface_FAKE not found"})
+            })
+    })
+    test("404: Invalid data to post - incorrect review_id key", () => {
+        const dummyData = {
+            "username": "bainesface",
+            "body": "Nothing..."
         }
         return request(app)
             .post("/api/reviews/2222/comments")
             .send(dummyData)
-            .expect(400)
+            .expect(404)
             .then(({body})=>{
-                expect(body).toEqual({post_error: "review does not have a record of: '2222' in its corresponding table"})
+                expect(body).toEqual({status: 404, msg: "2222 not found"})
             })
     })
 })
