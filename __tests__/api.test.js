@@ -41,6 +41,117 @@ describe("GET API - categories", () => {
     });
 });
 
+describe.only("GET API - reviews with queries", () => {
+    test("200: gets data with all 3 inputs", () => {
+        return request(app)
+            .get("/api/reviews?category=dexterity&sort_by=title&order=desc")
+            .expect(200)
+            .then(({body}) => {
+                const queriedReviews = body.queriedReviews;
+                expect(queriedReviews).toHaveLength(1)
+                queriedReviews.forEach(entry => {
+                    expect(entry).toMatchObject({
+                        title: expect.any(String),
+                        owner: expect.any(String),
+                        review_id: expect.any(Number),
+                        category: expect.any(String),
+                        review_img_url: expect.any(String),
+                        created_at: expect.any(String),
+                        votes: expect.any(Number),
+                        designer: expect.any(String),
+                    });
+                });
+            });      
+    })
+    test("200: GET all 3 inputs but category key is spelt wrong", () => {
+        return request(app)
+            .get("/api/reviews?categoryERROR=dexterity&sort_by=title&order=desc")
+            .expect(200)
+            .then(({body}) => {
+                const queriedReviews = body.queriedReviews;
+                expect(queriedReviews).toHaveLength(testData.reviewData.length)
+                queriedReviews.forEach(entry => {
+                    expect(entry).toMatchObject({
+                        title: expect.any(String),
+                        owner: expect.any(String),
+                        review_id: expect.any(Number),
+                        category: expect.any(String),
+                        review_img_url: expect.any(String),
+                        created_at: expect.any(String),
+                        votes: expect.any(Number),
+                        designer: expect.any(String),
+                    });
+                });
+            });     
+    })
+    test("200: GET all 3 inputs but sort_by key is spelt wrong", () => {
+        return request(app)
+            .get("/api/reviews?category=dexterity&sort_byERROR=title&order=desc")
+            .expect(200)
+            .then(({body}) => {
+                const queriedReviews = body.queriedReviews;
+                expect(queriedReviews).toHaveLength(1)
+                queriedReviews.forEach(entry => {
+                    expect(entry).toMatchObject({
+                        title: expect.any(String),
+                        owner: expect.any(String),
+                        review_id: expect.any(Number),
+                        category: expect.any(String),
+                        review_img_url: expect.any(String),
+                        created_at: expect.any(String),
+                        votes: expect.any(Number),
+                        designer: expect.any(String),
+                    });
+                });
+            });     
+    })
+    test("200: GET all 3 inputs but order key is spelt wrong", () => {
+        return request(app)
+            .get("/api/reviews?category=dexterity&sort_byERROR=title&orderERROR=desc")
+            .expect(200)
+            .then(({body}) => {
+                const queriedReviews = body.queriedReviews;
+                expect(queriedReviews).toHaveLength(1)
+                queriedReviews.forEach(entry => {
+                    expect(entry).toMatchObject({
+                        title: expect.any(String),
+                        owner: expect.any(String),
+                        review_id: expect.any(Number),
+                        category: expect.any(String),
+                        review_img_url: expect.any(String),
+                        created_at: expect.any(String),
+                        votes: expect.any(Number),
+                        designer: expect.any(String),
+                    });
+                });
+            });     
+    })
+    test("204: GET all 3 inputs BUT category=FunFunFun, does not exists", () => {
+        return request(app)
+            .get("/api/reviews?category=FunFunFun&sort_by=title&order=desc")
+            .expect(204);
+    })
+    test("200: GET all 3 inputs BUT sort_by=FunFunFun, does not exists", () => {
+        return request(app)
+            .get("/api/reviews?sort_by=FunFunFun&sort_by=title&order=desc")
+            .expect(200)
+            .then(({body}) => {
+                const queriedReviews = body.queriedReviews;
+                expect(queriedReviews).toHaveLength(testData.reviewData.length)
+            });
+    })
+    test("200: GET all 3 inputs BUT order=FunFunFun, does not exists", () => {
+        return request(app)
+            .get("/api/reviews?sort_by=FunFunFun&sort_by=title&order=desc")
+            .expect(200)
+            .then(({body}) => {
+                const queriedReviews = body.queriedReviews;
+                expect(queriedReviews).toHaveLength(testData.reviewData.length)
+            });
+    })
+
+});
+
 describe("GET API - all reviews", () => {
     test("200: get all reviews", () => {
         return request(app)

@@ -1,5 +1,35 @@
 const db = require("../db/connection.js")
 
+exports.fetchReviewsQuery = (params) => {
+    let sql = ` SELECT * FROM reviews`
+
+    if(params.category) sql += ` WHERE category = '${params.category}'`
+
+    if(params.sort_by){
+        const column = params.sort_by;
+        if(column === 'review_id') sql += ` ORDER BY ${column}`
+        else if(column === 'title') sql += ` ORDER BY ${column}`
+        else if(column === 'category') sql += ` ORDER BY ${column}`
+        else if(column === 'desinger') sql += ` ORDER BY ${column}`
+        else if(column === 'owner') sql += ` ORDER BY ${column}`
+        else if(column === 'votes') sql += ` ORDER BY ${column}`
+        else if(column === 'created_at') sql += ` ORDER BY ${column}`
+        else sql += ` ORDER BY created_at`
+    }else sql += ` ORDER BY created_at`
+
+    if(params.order) sql += ` ${params.order};`
+    else sql += ` DESC;`
+
+    return db.query(sql)
+        .then((data) => {
+            if(data.rowCount === 0) {
+                return {status: 204, msg: "No content found"};            
+            }else{
+                return data.rows       
+            }
+        }); 
+}
+
 exports.updateVotesWithReviewID = (req) => {
 
     if(!req.body.votes) return Promise.reject({status: 400, msg: "400 - Bad input"});
