@@ -10,7 +10,7 @@ afterAll(() => connection.end());
 beforeEach(() => seed(testData))
 
 
-xdescribe("404: Ensure correct response when 404 occurs", () => {
+describe("404: Ensure correct response when 404 occurs", () => {
     test("categories - /api/categoriezz missplet", () => {
     return request(app)
         .get("/api/categoriezz")
@@ -23,7 +23,7 @@ xdescribe("404: Ensure correct response when 404 occurs", () => {
     });
 });
 
-xdescribe("GET API - categories", () => {
+describe("GET API - categories", () => {
     test("200: get a list of all categories", () => {
         return request(app)
             .get("/api/categories")
@@ -41,7 +41,7 @@ xdescribe("GET API - categories", () => {
     });
 });
 
-xdescribe("GET API - all reviews", () => {
+describe("GET API - all reviews", () => {
     test("200: get all reviews", () => {
         return request(app)
             .get("/api/reviews")
@@ -169,7 +169,7 @@ describe("POST API - insert a comment row using review_id and author FK", () => 
     })
 })
 
-xdescribe("GET API - get all comments by review ID", () => {
+describe("GET API - get all comments by review ID", () => {
     test("200: get all comments from a single review ID", () => {
         return request(app)
             .get("/api/reviews/2/comments")
@@ -227,7 +227,7 @@ xdescribe("GET API - get all comments by review ID", () => {
     })
 });
 
-xdescribe("GET API - reviews by ID", () => {
+describe("GET API - reviews by ID", () => {
     test("200: get a single review by ID", () => {
         return request(app)
             .get("/api/reviews/3")
