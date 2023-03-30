@@ -169,6 +169,75 @@ describe("POST API - insert a comment row using review_id and author FK", () => 
     })
 })
 
+describe("PATCH API - update reviews table, column votes by input", () => {
+    test("200: update votes from an object inputted", () => {
+        const dummyData = {votes: 50};
+        return request(app)
+            .patch("/api/reviews/2")
+            .send(dummyData)
+            .expect(200)
+            .then(({body}) => {
+                const expected = {
+                    review_id: 2,
+                    title: 'Jenga',
+                    category: 'dexterity',
+                    designer: 'Leslie Scott',
+                    owner: 'philippaclaire9',
+                    review_body: 'Fiddly fun for all the family',
+                    review_img_url: 'https://images.pexels.com/photos/4473494/pexels-photo-4473494.jpeg?w=700&h=700',
+                    created_at: '2021-01-18T10:01:41.251Z',
+                    votes: 55
+                }               
+            expect(body.review).toEqual(expected)
+            })
+    })
+    test("404: valid ID but not found in table", () => {
+        const dummyData = {votes: 50};
+        return request(app)
+            .patch("/api/reviews/20")
+            .send(dummyData)
+            .expect(200)
+            .then(({body}) => {
+                const expected = {
+                    status: 404,
+                    msg: "No content found"
+                }
+                expect(body.review).toEqual(expected)
+            })
+    })
+    test("400: bad input - props value", () => {
+        const dummyData = {votes: 'abc'}
+        return request(app)
+            .patch("/api/reviews/2")
+            .send(dummyData)
+            .expect(400)
+            .then(({body}) => {
+                expect(body).toEqual({msg: '400 - Bad input'})
+            })
+    })
+    test("400: bad input - incorrect prop name", () => {
+        const dummyData = {votezzz: 10}
+        return request(app)
+            .patch("/api/reviews/2")
+            .send(dummyData)
+            .expect(400)
+            .then(({body}) => {
+                expect(body).toEqual({msg: '400 - Bad input'})
+            })
+    })
+    test("400: bad input - incorrect ID in path symbol", () => {
+        const dummyData = {votes: 10}
+        return request(app)
+            .patch("/api/reviews/2+")
+            .send(dummyData)
+            .expect(400)
+            .then(({body}) => {
+                expect(body).toEqual({msg: '400 - Bad input'})
+            })
+    })
+
+})
+
 describe("GET API - get all comments by review ID", () => {
     test("200: get all comments from a single review ID", () => {
         return request(app)
