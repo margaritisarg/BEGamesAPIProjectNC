@@ -23,7 +23,7 @@ describe("404: Ensure correct response when 404 occurs", () => {
     });
 });
 
-describe.only("GET API - get all users", () => {
+describe("GET API - get all users", () => {
     test("200: get a list of all the users", () => {
         return request(app)
             .get("/api/users")
