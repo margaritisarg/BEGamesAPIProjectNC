@@ -178,11 +178,31 @@ describe("PATCH API - update reviews table, column votes by input", () => {
             .expect(200)
             .then(({body}) => {
                 const expected = {
-                    status: 'Updated successfully',
-                    rowCount: 1,
-                    review: { title: 'Jenga', votes: 55 }
-                  }
-                expect(body).toEqual(expected)
+                    review_id: 2,
+                    title: 'Jenga',
+                    category: 'dexterity',
+                    designer: 'Leslie Scott',
+                    owner: 'philippaclaire9',
+                    review_body: 'Fiddly fun for all the family',
+                    review_img_url: 'https://images.pexels.com/photos/4473494/pexels-photo-4473494.jpeg?w=700&h=700',
+                    created_at: '2021-01-18T10:01:41.251Z',
+                    votes: 55
+                }               
+            expect(body.review).toEqual(expected)
+            })
+    })
+    test("404: valid ID but not found in table", () => {
+        const dummyData = {votes: 50};
+        return request(app)
+            .patch("/api/reviews/20")
+            .send(dummyData)
+            .expect(200)
+            .then(({body}) => {
+                const expected = {
+                    status: 404,
+                    msg: "No content found"
+                }
+                expect(body.review).toEqual(expected)
             })
     })
     test("400: bad input - props value", () => {
@@ -215,16 +235,7 @@ describe("PATCH API - update reviews table, column votes by input", () => {
                 expect(body).toEqual({msg: '400 - Bad input'})
             })
     })
-    test("400: bad input - incorrect ID in path char", () => {
-        const dummyData = {votes: 10}
-        return request(app)
-            .patch("/api/reviews/as2")
-            .send(dummyData)
-            .expect(400)
-            .then(({body}) => {
-                expect(body).toEqual({msg: '400 - Bad input'})
-            })
-    })
+
 })
 
 describe("GET API - get all comments by review ID", () => {

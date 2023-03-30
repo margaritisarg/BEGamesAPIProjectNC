@@ -7,7 +7,7 @@ const {
 exports.patchVotesByReviewID = (req, res, next) => {
     updateVotesWithReviewID(req)
         .then((data) => {
-            res.status(200).send(data)
+            res.status(200).send({review: data})
         })
         .catch(err => next(err));
 }

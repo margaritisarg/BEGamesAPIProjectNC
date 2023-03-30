@@ -17,10 +17,9 @@ exports.updateVotesWithReviewID = (req) => {
         return db.query(sql, [votes, reviewID])
         .then((data) => {
             if(data.rowCount === 0) {
-                return {status: 204, msg: "204 - No content found"};            
+                return {status: 404, msg: "No content found"};            
             }else{
-                const reviewObj = { title: data.rows[0].title, votes: data.rows[0].votes }
-                return {status: "Updated successfully", rowCount: data.rowCount, review: reviewObj}        
+                return data.rows[0]       
             }
         });
     }else{
