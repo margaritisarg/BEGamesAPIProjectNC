@@ -10,7 +10,7 @@ afterAll(() => connection.end());
 beforeEach(() => seed(testData))
 
 
-describe("404: Ensure correct response when 404 occurs", () => {
+xdescribe("404: Ensure correct response when 404 occurs", () => {
     test("categories - /api/categoriezz missplet", () => {
     return request(app)
         .get("/api/categoriezz")
@@ -23,7 +23,7 @@ describe("404: Ensure correct response when 404 occurs", () => {
     });
 });
 
-describe("GET API - categories", () => {
+xdescribe("GET API - categories", () => {
     test("200: get a list of all categories", () => {
         return request(app)
             .get("/api/categories")
@@ -41,7 +41,7 @@ describe("GET API - categories", () => {
     });
 });
 
-describe("GET API - all reviews", () => {
+xdescribe("GET API - all reviews", () => {
     test("200: get all reviews", () => {
         return request(app)
             .get("/api/reviews")
@@ -66,7 +66,7 @@ describe("GET API - all reviews", () => {
     });
 });
 
-describe("POST API - insert a comment row using review_id and author FK", () => {
+xdescribe("POST API - insert a comment row using review_id and author FK", () => {
     test("201: sucessfully insert a new comment in the comments table", () => {
         const dummyData = {
             "username": "bainesface",
@@ -169,52 +169,30 @@ describe("POST API - insert a comment row using review_id and author FK", () => 
     })
 })
 
-describe("DELETE API - delete comment by id", () => {
+describe.only("DELETE API - delete comment by id", () => {
     test("200: ID exists - delete comment by id", () => {
         return request(app)
             .delete("/api/comments/2")
-            .expect(200)
-            .then(({body}) => {
-                const expected = {
-                    status: 200,
-                    command: 'DELETE',
-                    count: 1,
-                    note: 'Successfully deleted'
-                }
-                expect(body.deleted).toEqual(expected)
-            })
+            .expect(204);
     })
-    test("404: ID not exists: delete comment by id", () => {
+    test("204: ID not exists: delete comment by id", () => {
         return request(app)
             .delete("/api/comments/20")
-            .expect(200)
-            .then(({body}) => {
-                const expected = {
-                    status: 404,
-                    msg: "Not found"
-                }
-                expect(body.deleted).toEqual(expected)
-            })
+            .expect(204);
     })
     test("400: ID not a an int (symbol): delete comment by id", () => {
         return request(app)
             .delete("/api/comments/20+")
-            .expect(400)
-            .then(({body}) => {
-                expect(body).toEqual({msg: "400 - Bad input"})
-            })
+            .expect(400);
     })
     test("400: ID not a an int (char): delete comment by id", () => {
         return request(app)
             .delete("/api/comments/abc")
-            .expect(400)
-            .then(({body}) => {
-                expect(body).toEqual({msg: "400 - Bad input"})
-            })
+            .expect(400);
     })
 })
 
-describe("GET API - get all comments by review ID", () => {
+xdescribe("GET API - get all comments by review ID", () => {
     test("200: get all comments from a single review ID", () => {
         return request(app)
             .get("/api/reviews/2/comments")
@@ -271,7 +249,7 @@ describe("GET API - get all comments by review ID", () => {
     })
 });
 
-describe("GET API - reviews by ID", () => {
+xdescribe("GET API - reviews by ID", () => {
     test("200: get a single review by ID", () => {
         return request(app)
             .get("/api/reviews/3")

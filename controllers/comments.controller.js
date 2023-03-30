@@ -3,7 +3,7 @@ const { deleteCommentByIdOnComments } = require("../models/comments.model.js");
 exports.deleteCommentByID = (req, res, next) => {
     deleteCommentByIdOnComments(req)
         .then((data) => {
-            res.status(200).send({deleted: data});
+            res.sendStatus(data.status);
         })
         .catch(err => next(err));
 
