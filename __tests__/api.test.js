@@ -169,6 +169,51 @@ describe("POST API - insert a comment row using review_id and author FK", () => 
     })
 })
 
+describe("DELETE API - delete comment by id", () => {
+    test("200: ID exists - delete comment by id", () => {
+        return request(app)
+            .delete("/api/comments/2")
+            .expect(200)
+            .then(({body}) => {
+                const expected = {
+                    status: 200,
+                    command: 'DELETE',
+                    count: 1,
+                    note: 'Successfully deleted'
+                }
+                expect(body.deleted).toEqual(expected)
+            })
+    })
+    test("404: ID not exists: delete comment by id", () => {
+        return request(app)
+            .delete("/api/comments/20")
+            .expect(200)
+            .then(({body}) => {
+                const expected = {
+                    status: 404,
+                    msg: "Not found"
+                }
+                expect(body.deleted).toEqual(expected)
+            })
+    })
+    test("400: ID not a an int (symbol): delete comment by id", () => {
+        return request(app)
+            .delete("/api/comments/20+")
+            .expect(400)
+            .then(({body}) => {
+                expect(body).toEqual({msg: "400 - Bad input"})
+            })
+    })
+    test("400: ID not a an int (char): delete comment by id", () => {
+        return request(app)
+            .delete("/api/comments/abc")
+            .expect(400)
+            .then(({body}) => {
+                expect(body).toEqual({msg: "400 - Bad input"})
+            })
+    })
+})
+
 describe("GET API - get all comments by review ID", () => {
     test("200: get all comments from a single review ID", () => {
         return request(app)
