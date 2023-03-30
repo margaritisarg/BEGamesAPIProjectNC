@@ -2,21 +2,25 @@ const db = require("../db/connection.js")
 
 exports.updateVotesWithReviewID = (req) => {
 
-    const reviewID = req.params.review_id;
+    if(!req.body.votes) return Promise.reject({status: 400, msg: "400 - Bad input"});
     const votes = req.body.votes.toString();
+
+    const reviewID = req.params.review_id;
     if(reviewID.match(/^\d+$/) && votes.match(/^(\d+$|-\d+)$/)){
         const sql =
         `
             UPDATE reviews
                 SET votes = votes + $1
-            WHERE review_id = $2;   
+            WHERE review_id = $2
+            RETURNING *;   
         `;
         return db.query(sql, [votes, reviewID])
         .then((data) => {
             if(data.rowCount === 0) {
                 return {status: 204, msg: "204 - No content found"};            
             }else{
-                return {status: "Updated successfully", rowCount: data.rowCount}        
+                const reviewObj = { title: data.rows[0].title, votes: data.rows[0].votes }
+                return {status: "Updated successfully", rowCount: data.rowCount, review: reviewObj}        
             }
         });
     }else{
