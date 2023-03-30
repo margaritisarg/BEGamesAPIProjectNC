@@ -23,6 +23,26 @@ describe("404: Ensure correct response when 404 occurs", () => {
     });
 });
 
+describe.only("GET API - get all users", () => {
+    test("200: get a list of all the users", () => {
+        return request(app)
+            .get("/api/users")
+            .expect(200)
+            .then(({body}) => {
+                const allUsers = body.users;
+                expect(allUsers).toHaveLength(testData.userData.length);
+                allUsers.forEach(entry => {
+                    expect(entry).toMatchObject({
+                        username: expect.any(String),
+                        name: expect.any(String),
+                        avatar_url: expect.any(String)
+                    })
+                })
+
+            })
+    })
+})
+
 describe("GET API - categories", () => {
     test("200: get a list of all categories", () => {
         return request(app)
