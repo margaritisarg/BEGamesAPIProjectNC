@@ -41,7 +41,7 @@ describe("GET API - categories", () => {
     });
 });
 
-describe.only("GET API - reviews with queries", () => {
+describe("GET API - reviews with queries", () => {
     test("200: gets data with all 3 inputs", () => {
         return request(app)
             .get("/api/reviews?category=dexterity&sort_by=title&order=desc")
