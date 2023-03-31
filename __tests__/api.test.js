@@ -383,7 +383,7 @@ describe("GET API - reviews by ID", () => {
 });
 
 
-describe.only("GET - /api - end point test", () => {
+describe("GET - /api - end point test", () => {
     test("200: get a single review by ID", () => {
         return request(app)
             .get("/api")
