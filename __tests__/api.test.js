@@ -189,6 +189,28 @@ describe("POST API - insert a comment row using review_id and author FK", () => 
     })
 })
 
+describe("DELETE API - delete comment by id", () => {
+    test("200: ID exists - delete comment by id", () => {
+        return request(app)
+            .delete("/api/comments/2")
+            .expect(204);
+    })
+    test("204: ID not exists: delete comment by id", () => {
+        return request(app)
+            .delete("/api/comments/20")
+            .expect(204);
+    })
+    test("400: ID not a an int (symbol): delete comment by id", () => {
+        return request(app)
+            .delete("/api/comments/20+")
+            .expect(400);
+    })
+    test("400: ID not a an int (char): delete comment by id", () => {
+        return request(app)
+            .delete("/api/comments/abc")
+            .expect(400);
+    })
+});
 describe("PATCH API - update reviews table, column votes by input", () => {
     test("200: update votes from an object inputted", () => {
         const dummyData = {votes: 50};
@@ -315,6 +337,7 @@ describe("GET API - get all comments by review ID", () => {
     })
 });
 
+
 describe("GET API - reviews by ID", () => {
     test("200: get a single review by ID", () => {
         return request(app)
@@ -356,5 +379,4 @@ describe("GET API - reviews by ID", () => {
                 expect(result).toEqual({msg: "400 - Bad input"})
             });
     });
-
 });
