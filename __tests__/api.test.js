@@ -381,3 +381,15 @@ describe("GET API - reviews by ID", () => {
             });
     });
 });
+
+
+describe.only("GET - /api - end point test", () => {
+    test("200: get a single review by ID", () => {
+        return request(app)
+            .get("/api")
+            .expect(200)
+            .then(({body}) => {
+                expect(Object.keys(body).length).toBe(9)
+            });
+    });
+})
