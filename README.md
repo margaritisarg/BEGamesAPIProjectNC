@@ -24,3 +24,9 @@ Enter the command "npm run setup-dbs" and hit enter. Then enter the command "npm
 How to run tests:
 The commend in the terminal "npm t" will run all the tests in the "__test__" file. To speciify a c file to run tests on only, run "npm t ./__test__/<fileName>.test.js"
 
+
+Minium Node version:
+v19.6.0
+
+Minium PostgreSQL version:
+14.7
