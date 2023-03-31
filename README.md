@@ -1,6 +1,6 @@
 ## connecting to the two DBs locally
 
-Link to hosted site (may be a little slow): https://gamesmarsncapi.onrender.com/api/reviews/2 
+Link to hosted site (may be a little slow): https://gamesmarsncapi.onrender.com/api 
 
 Summary of project:
 This is an API project using express, MVC architecture, jest, supertests and JS to create robust endpoints which give the user information regarding the games DB. 
