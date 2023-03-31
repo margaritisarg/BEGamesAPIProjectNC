@@ -11,6 +11,7 @@ exports.fetchReviewsQuery = (params) => {
     `
 
     if(params.category) sql += ` WHERE r.category = '${params.category}'`
+    else return Promise.reject({status: 404, msg: "Not found"}); 
 
     sql += 
     `
@@ -26,13 +27,13 @@ exports.fetchReviewsQuery = (params) => {
         const column = params.sort_by;
         if(columnList.includes(column)) sql += ` ORDER BY s.${column}`
         else sql += ` ORDER BY s.created_at`
-    }else sql += ` ORDER BY s.created_at`
+    }else return Promise.reject({status: 400, msg: "Not found"});
 
     if(params.order) {
         const order = params.order
         if(order.toUpperCase() === 'ASC' ) sql += ` ${params.order};`
         else sql += ` DESC;`
-    }else sql += ` DESC;`
+    }else return Promise.reject({status: 400, msg: "Not found"});
 
     return db.query(sql)
         .then((data) => {
