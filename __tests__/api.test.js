@@ -305,6 +305,7 @@ describe("GET API - reviews by ID", () => {
                 expect(reviewsResult).toHaveLength(1);
                 reviewsResult.forEach(entry => {
                     expect(entry).toMatchObject({
+                        comment_count: expect.any(Number),
                         review_id: expect.any(Number),
                         title: expect.any(String),
                         category: expect.any(String),
