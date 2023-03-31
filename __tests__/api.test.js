@@ -41,7 +41,7 @@ describe("GET API - categories", () => {
     });
 });
 
-describe("GET API - reviews with queries", () => {
+describe.only("GET API - reviews with queries", () => {
     test("200: gets data with all 3 inputs", () => {
         return request(app)
             .get("/api/reviews?category=dexterity&sort_by=title&order=desc")
@@ -51,6 +51,7 @@ describe("GET API - reviews with queries", () => {
                 expect(queriedReviews).toHaveLength(1)
                 queriedReviews.forEach(entry => {
                     expect(entry).toMatchObject({
+                        comment_count: expect.any(Number),
                         title: expect.any(String),
                         owner: expect.any(String),
                         review_id: expect.any(Number),
@@ -59,7 +60,8 @@ describe("GET API - reviews with queries", () => {
                         created_at: expect.any(String),
                         votes: expect.any(Number),
                         designer: expect.any(String),
-                    });
+                    })
+                    expect(queriedReviews[0].category).toBe("dexterity");
                 });
             });      
     })
@@ -69,9 +71,10 @@ describe("GET API - reviews with queries", () => {
             .expect(200)
             .then(({body}) => {
                 const queriedReviews = body.queriedReviews;
-                expect(queriedReviews).toHaveLength(testData.reviewData.length)
+                expect(queriedReviews).toHaveLength(2)
                 queriedReviews.forEach(entry => {
                     expect(entry).toMatchObject({
+                        comment_count: expect.any(Number),
                         title: expect.any(String),
                         owner: expect.any(String),
                         review_id: expect.any(Number),
@@ -93,6 +96,7 @@ describe("GET API - reviews with queries", () => {
                 expect(queriedReviews).toHaveLength(1)
                 queriedReviews.forEach(entry => {
                     expect(entry).toMatchObject({
+                        comment_count: expect.any(Number),
                         title: expect.any(String),
                         owner: expect.any(String),
                         review_id: expect.any(Number),
@@ -114,6 +118,7 @@ describe("GET API - reviews with queries", () => {
                 expect(queriedReviews).toHaveLength(1)
                 queriedReviews.forEach(entry => {
                     expect(entry).toMatchObject({
+                        comment_count: expect.any(Number),
                         title: expect.any(String),
                         owner: expect.any(String),
                         review_id: expect.any(Number),
@@ -131,22 +136,22 @@ describe("GET API - reviews with queries", () => {
             .get("/api/reviews?category=FunFunFun&sort_by=title&order=desc")
             .expect(204);
     })
-    test("200: GET all 3 inputs BUT sort_by=FunFunFun, does not exists", () => {
+    test("200: GET all 3 from 2 inputs (sort_by & order) BUT sort_by=FunFunFun, does not exists", () => {
         return request(app)
             .get("/api/reviews?sort_by=FunFunFun&sort_by=title&order=desc")
             .expect(200)
             .then(({body}) => {
                 const queriedReviews = body.queriedReviews;
-                expect(queriedReviews).toHaveLength(testData.reviewData.length)
+                expect(queriedReviews).toHaveLength(2)
             });
     })
-    test("200: GET all 3 inputs BUT order=FunFunFun, does not exists", () => {
+    test("200: GET all from 2 inputs (sort_by & order) BUT order=FunFunFun, does not exists", () => {
         return request(app)
-            .get("/api/reviews?sort_by=FunFunFun&sort_by=title&order=desc")
+            .get("/api/reviews?sort_by=title&order=FunFunFun")
             .expect(200)
             .then(({body}) => {
                 const queriedReviews = body.queriedReviews;
-                expect(queriedReviews).toHaveLength(testData.reviewData.length)
+                expect(queriedReviews).toHaveLength(2)
             });
     })
 

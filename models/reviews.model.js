@@ -1,24 +1,38 @@
 const db = require("../db/connection.js")
 
 exports.fetchReviewsQuery = (params) => {
-    let sql = ` SELECT * FROM reviews`
+    let sql = 
+    `
+    SELECT * FROM 
+    (
+        SELECT CAST( COUNT(c.votes) AS INTEGER) comment_count, r.* FROM reviews r
+        INNER JOIN comments c
+            ON c.review_id = r.review_id
+    `
 
-    if(params.category) sql += ` WHERE category = '${params.category}'`
+    if(params.category) sql += ` WHERE r.category = '${params.category}'`
 
+    sql += 
+    `
+    GROUP BY 
+        r.review_id, r.title, r.category, r.designer,
+        r.owner, r.review_body, r.review_img_url,
+        r.created_at, r.votes
+    ) s
+    `
+
+    const columnList = ['review_id', 'title', 'category', 'desinger', 'owner', 'votes', 'created_at']
     if(params.sort_by){
         const column = params.sort_by;
-        if(column === 'review_id') sql += ` ORDER BY ${column}`
-        else if(column === 'title') sql += ` ORDER BY ${column}`
-        else if(column === 'category') sql += ` ORDER BY ${column}`
-        else if(column === 'desinger') sql += ` ORDER BY ${column}`
-        else if(column === 'owner') sql += ` ORDER BY ${column}`
-        else if(column === 'votes') sql += ` ORDER BY ${column}`
-        else if(column === 'created_at') sql += ` ORDER BY ${column}`
-        else sql += ` ORDER BY created_at`
-    }else sql += ` ORDER BY created_at`
+        if(columnList.includes(column)) sql += ` ORDER BY s.${column}`
+        else sql += ` ORDER BY s.created_at`
+    }else sql += ` ORDER BY s.created_at`
 
-    if(params.order) sql += ` ${params.order};`
-    else sql += ` DESC;`
+    if(params.order) {
+        const order = params.order
+        if(order.toUpperCase() === 'ASC' ) sql += ` ${params.order};`
+        else sql += ` DESC;`
+    }else sql += ` DESC;`
 
     return db.query(sql)
         .then((data) => {
