@@ -5,18 +5,22 @@ const { getReviewsByID, getReviews, getCommentsByReviewID, postCommentWithReview
 const { errorHandle, invalidURL, errorPlaceHolder } = require("./controllers/errorHandling.controller.js")
 const { deleteCommentByID } = require("./controllers/comments.controller.js")
 const { getAllUsers } = require("./controllers/users.controller.js")
+const { getEndPoint } = require("./controllers/endPoint.controller.js")
 
 app.use(express.json());
 
+app.get("/api/reviews/:review_id", getReviewsByID) 
+app.get("/api/reviews", getReviews) 
+app.get("/api/reviews/:review_id/comments", getCommentsByReviewID)  
+app.post("/api/reviews/:review_id/comments", postCommentWithReviewID) 
+app.patch("/api/reviews/:review_id", patchVotesByReviewID)  
+app.delete("/api/comments/:comment_id", deleteCommentByID)  
 
 app.get("/api/categories", getAllCategories)
-app.get("/api/reviews/:review_id", getReviewsByID)
-app.get("/api/reviews", getReviews)
-app.get("/api/reviews/:review_id/comments", getCommentsByReviewID)
-app.post("/api/reviews/:review_id/comments", postCommentWithReviewID)
-app.delete("/api/comments/:comment_id", deleteCommentByID)
-app.patch("/api/reviews/:review_id", patchVotesByReviewID)
-app.get("/api/users", getAllUsers)
+
+app.get("/api/users", getAllUsers) 
+
+app.get("/api", getEndPoint) 
 
 app.get("*", invalidURL)
 app.patch("*", invalidURL)
