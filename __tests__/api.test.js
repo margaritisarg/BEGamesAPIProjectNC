@@ -61,6 +61,63 @@ describe("GET API - categories", () => {
     });
 });
 
+describe("GET API - reviews with queries", () => {
+    test("200: gets data with all 3 inputs", () => {
+        return request(app)
+            .get("/api/reviews?category=dexterity&sort_by=title&order=desc")
+            .expect(200)
+            .then(({body}) => {
+                const queriedReviews = body.queriedReviews;
+                expect(queriedReviews).toHaveLength(1)
+                queriedReviews.forEach(entry => {
+                    expect(entry).toMatchObject({
+                        comment_count: expect.any(Number),
+                        title: expect.any(String),
+                        owner: expect.any(String),
+                        review_id: expect.any(Number),
+                        category: expect.any(String),
+                        review_img_url: expect.any(String),
+                        created_at: expect.any(String),
+                        votes: expect.any(Number),
+                        designer: expect.any(String),
+                    })
+                    expect(queriedReviews[0].category).toBe("dexterity");
+                });
+            });      
+    })
+    test("404: GET all 3 inputs but category key is spelt wrong", () => {
+        return request(app)
+            .get("/api/reviews?categoryERROR=dexterity&sort_by=title&order=desc")
+            .expect(404);     
+    })
+    test("400: GET all 3 inputs but sort_by key is spelt wrong", () => {
+        return request(app)
+            .get("/api/reviews?category=dexterity&sort_byERROR=title&order=desc")
+            .expect(400);     
+    })
+    test("400: GET all 3 inputs but order key is spelt wrong", () => {
+        return request(app)
+            .get("/api/reviews?category=dexterity&sort_byERROR=title&orderERROR=desc")
+            .expect(400)   
+    })
+    test("204: GET all 3 inputs BUT category=FunFunFun, does not exists", () => {
+        return request(app)
+            .get("/api/reviews?category=FunFunFun&sort_by=title&order=desc")
+            .expect(204);
+    })
+    test("404: GET all 3 from 2 inputs (sort_by & order) BUT sort_by=FunFunFun, does not exists", () => {
+        return request(app)
+            .get("/api/reviews?sort_by=FunFunFun&sort_by=title&order=desc")
+            .expect(404)
+    })
+    test("404: GET all from 2 inputs (sort_by & order) BUT order=FunFunFun, does not exists", () => {
+        return request(app)
+            .get("/api/reviews?sort_by=title&order=FunFunFun")
+            .expect(404)
+    })
+
+});
+
 describe("GET API - all reviews", () => {
     test("200: get all reviews", () => {
         return request(app)

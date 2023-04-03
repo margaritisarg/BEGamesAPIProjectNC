@@ -1,6 +1,6 @@
 const { 
     fetchReviewByID, fetchReviews, fetchCommentsByReviewID, insertCommentWithID,
-    updateVotesWithReviewID 
+    updateVotesWithReviewID, fetchReviewsQuery
 } = require("../models/reviews.model.js");
 
 
@@ -29,11 +29,20 @@ exports.getCommentsByReviewID = (req, res, next) => {
 };
 
 exports.getReviews = (req, res, next) => {
-    fetchReviews()
-        .then(data => {
-            res.status(200).send({allReviews: data});
-        })
-        .catch(err => next(err));
+    if(Object.keys(req.query).length === 0){
+        fetchReviews()
+            .then(data => {
+                res.status(200).send({allReviews: data});
+            })
+            .catch(err => next(err));
+    }else{
+        fetchReviewsQuery(req.query)
+            .then(data => {
+                if(data.status === 204) res.sendStatus(data.status);
+                else res.status(200).send({queriedReviews: data});
+            })
+            .catch(err => next(err));
+    }
 };
 
 exports.getReviewsByID = (req, res, next) => {
