@@ -11,7 +11,7 @@ app.use(express.json());
 
 app.get("/api/categories", getAllCategories)
 app.get("/api/reviews/:review_id", getReviewsByID)
-app.get("/api/reviews", getReviews)
+app.get("/api/reviews?", getReviews)
 app.get("/api/reviews/:review_id/comments", getCommentsByReviewID)
 app.post("/api/reviews/:review_id/comments", postCommentWithReviewID)
 app.delete("/api/comments/:comment_id", deleteCommentByID)
