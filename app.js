@@ -7,6 +7,9 @@ const { deleteCommentByID } = require("./controllers/comments.controller.js")
 const { getAllUsers } = require("./controllers/users.controller.js")
 const endPointJSON = require("./endpointFinal.json")
 
+const cors = require('cors')
+
+app.use(cors());
 app.use(express.json());
 
 app.get("/api/reviews/:review_id", getReviewsByID) 
