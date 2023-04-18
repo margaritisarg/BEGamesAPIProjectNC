@@ -158,14 +158,14 @@ exports.fetchReviewByID = (reviewID) => {
     if(reviewID.match(/^\d+$/)) {
         const sql = 
         `
-            SELECT CAST(COUNT(c.comment_id) AS INTEGER) comment_count, r.* FROM reviews r
-                INNER JOIN comments c
-                    ON r.review_id = c. review_id
-                WHERE r.review_id = $1
-            GROUP BY 
-                r.review_id, r.title, r.category, r.designer,
-                r.owner, r.review_body, r.review_img_url,
-                r.created_at, r.votes;
+        SELECT CAST(COUNT(c.comment_id) AS INTEGER) comment_count, r.* FROM reviews r
+        FULL OUTER JOIN comments c
+            ON r.review_id = c. review_id
+            WHERE r.review_id = $1
+        GROUP BY
+            r.review_id, r.title, r.category, r.designer,
+            r.owner, r.review_body, r.review_img_url,
+            r.created_at, r.votes;
         `;
       
         return db.query(sql, [reviewID])
