@@ -1,6 +1,7 @@
 const db = require("../db/connection.js")
 
 exports.fetchReviewsQuery = (params) => {
+    // return Promise.resolve({status: 200, category: params.category})
     let sql = 
     `
     SELECT * FROM 
@@ -22,18 +23,21 @@ exports.fetchReviewsQuery = (params) => {
     ) s
     `
 
-    const columnList = ['review_id', 'title', 'category', 'desinger', 'owner', 'votes', 'created_at']
+    //needs a default for sort_by and order. Check status codes as well. 
+    const columnList = ['review_id', 'title', 'category', 'designer', 'owner', 'votes', 'created_at']
     if(params.sort_by){
         const column = params.sort_by;
         if(columnList.includes(column)) sql += ` ORDER BY s.${column}`
         else sql += ` ORDER BY s.created_at`
-    }else return Promise.reject({status: 400, msg: "Not found"});
+    }else sql += ` ORDER BY s.created_at`
+
+
 
     if(params.order) {
         const order = params.order
         if(order.toUpperCase() === 'ASC' ) sql += ` ${params.order};`
         else sql += ` DESC;`
-    }else return Promise.reject({status: 400, msg: "Not found"});
+    }else sql += ` DESC;`
 
     return db.query(sql)
         .then((data) => {

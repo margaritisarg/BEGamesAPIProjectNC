@@ -90,15 +90,15 @@ describe("GET API - reviews with queries", () => {
             .get("/api/reviews?categoryERROR=dexterity&sort_by=title&order=desc")
             .expect(404);     
     })
-    test("400: GET all 3 inputs but sort_by key is spelt wrong", () => {
+    test("200: GET all 3 inputs but sort_by key is spelt wrong", () => {
         return request(app)
             .get("/api/reviews?category=dexterity&sort_byERROR=title&order=desc")
-            .expect(400);     
+            .expect(200);     
     })
-    test("400: GET all 3 inputs but order key is spelt wrong", () => {
+    test("200: GET all 3 inputs but order key is spelt wrong", () => {
         return request(app)
             .get("/api/reviews?category=dexterity&sort_byERROR=title&orderERROR=desc")
-            .expect(400)   
+            .expect(200)   
     })
     test("204: GET all 3 inputs BUT category=FunFunFun, does not exists", () => {
         return request(app)
