@@ -85,10 +85,10 @@ describe("GET API - reviews with queries", () => {
                 });
             });      
     })
-    test("404: GET all 3 inputs but category key is spelt wrong", () => {
+    test("200: GET all 3 inputs but category key is spelt wrong", () => {
         return request(app)
             .get("/api/reviews?categoryERROR=dexterity&sort_by=title&order=desc")
-            .expect(404);     
+            .expect(200);     
     })
     test("200: GET all 3 inputs but sort_by key is spelt wrong", () => {
         return request(app)
@@ -105,15 +105,15 @@ describe("GET API - reviews with queries", () => {
             .get("/api/reviews?category=FunFunFun&sort_by=title&order=desc")
             .expect(204);
     })
-    test("404: GET all 3 from 2 inputs (sort_by & order) BUT sort_by=FunFunFun, does not exists", () => {
+    test("200: GET all 3 from 2 inputs (sort_by & order) BUT sort_by=FunFunFun, does not exists", () => {
         return request(app)
             .get("/api/reviews?sort_by=FunFunFun&sort_by=title&order=desc")
-            .expect(404)
+            .expect(200)
     })
-    test("404: GET all from 2 inputs (sort_by & order) BUT order=FunFunFun, does not exists", () => {
+    test("200: GET all from 2 inputs (sort_by & order) BUT order=FunFunFun, does not exists", () => {
         return request(app)
             .get("/api/reviews?sort_by=title&order=FunFunFun")
-            .expect(404)
+            .expect(200)
     })
 
 });

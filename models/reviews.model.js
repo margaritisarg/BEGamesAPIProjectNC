@@ -2,6 +2,7 @@ const db = require("../db/connection.js")
 
 exports.fetchReviewsQuery = (params) => {
     // return Promise.resolve({status: 200, category: params.category})
+    console.log(params)
     let sql = 
     `
     SELECT * FROM 
@@ -12,7 +13,7 @@ exports.fetchReviewsQuery = (params) => {
     `
 
     if(params.category) sql += ` WHERE r.category = '${params.category}'`
-    else return Promise.reject({status: 404, msg: "Not found"}); 
+    // else return Promise.reject({status: 404, msg: "Not found"}); 
 
     sql += 
     `
