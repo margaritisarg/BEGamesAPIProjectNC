@@ -67,7 +67,7 @@ describe("GET API - reviews with queries", () => {
             .get("/api/reviews?category=dexterity&sort_by=title&order=desc")
             .expect(200)
             .then(({body}) => {
-                const queriedReviews = body.queriedReviews;
+                const queriedReviews = body.reviews;
                 expect(queriedReviews).toHaveLength(1)
                 queriedReviews.forEach(entry => {
                     expect(entry).toMatchObject({
@@ -124,7 +124,7 @@ describe("GET API - all reviews", () => {
             .get("/api/reviews")
             .expect(200)
             .then(({body}) => {
-                const reviewsResult = body.allReviews;
+                const reviewsResult = body.reviews;
                 expect(reviewsResult).toHaveLength(testData.reviewData.length)
                 reviewsResult.forEach(entry => {
                     expect(entry).toMatchObject({

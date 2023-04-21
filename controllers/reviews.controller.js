@@ -32,14 +32,14 @@ exports.getReviews = (req, res, next) => {
     if(Object.keys(req.query).length === 0){
         fetchReviews()
             .then(data => {
-                res.status(200).send({allReviews: data});
+                res.status(200).send({reviews: data});
             })
             .catch(err => next(err));
     }else{
         fetchReviewsQuery(req.query)
             .then(data => {
                 if(data.status === 204) res.sendStatus(data.status);
-                else res.status(200).send({queriedReviews: data});
+                else res.status(200).send({reviews: data});
             })
             .catch(err => next(err));
     }
