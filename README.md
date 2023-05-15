@@ -2,7 +2,7 @@
 
 # Summary of project:
 
-This is an API project using express, MVC architecture, jest, supertests and JS to create robust endpoints which give the user information regarding the games DB. 
+This is an API project using express, MVC architecture, jest, supertests and JS to create robust endpoints which give the user information regarding the game's reviews. 
 
 # How to create the env files:
 
@@ -13,13 +13,18 @@ In order to connect to the two DBs locallay, you will need to create two files, 
 Click on the blue clone button on Github and copy the HTTPS, then in your IDE's terminal, type "git clone <paste here>" and hit enter.
 
   How to install dependencies and dev dependencies:
-  The dependencies needed are: dotenv, express, pg and supertes. 
-  The dev dependencies are: 
+## Dependencies
+- cors: ^2.8.5
+- dotenv: ^16.0.0
+- express: ^4.18.2
+- pg: ^8.7.3
+- supertest: ^6.3.3
 
-- husky
-- jest
-- jest-extended
-- pg-format.
+## Development Dependencies
+- husky: ^8.0.2
+- jest: ^27.5.1
+- jest-extended: ^2.0.0
+- pg-format: ^1.0.4
 
 Enter the command "npm install <dependencies name>" and hit enter. Repeat for each. Dependencies and dev dependencies should be automatically placed into their correct object in the json file. 
 
