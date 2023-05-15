@@ -2,7 +2,7 @@
 Welcome to the GamesMarsnC API, a project built with Express, MVC architecture, Jest, Supertest, and JavaScript. This API provides users with information about game reviews through robust endpoints.
 
 ## Hosted Site
-Visit the hosted site here (may take a moment to load).
+Visit the hosted site here (may take a moment to load).  https://gamesmarsncapi.onrender.com/api 
 
 ## Getting Started
 ### Clone the Repository
