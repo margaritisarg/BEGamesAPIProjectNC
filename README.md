@@ -1,9 +1,7 @@
-## connecting to the two DBs locally
-
-Link to hosted site (may be a little slow): https://gamesmarsncapi.onrender.com/api 
+## Link to hosted site (may be a little slow): https://gamesmarsncapi.onrender.com/api 
 
 Summary of project:
-This is an API project using express, MVC architecture, jest, supertests and JS to create robust endpoints which give the user information regarding the games DB. 
+  This is an API project using express, MVC architecture, jest, supertests and JS to create robust endpoints which give the user information regarding the games DB. 
 
 How to create the env files:
 In order to connect to the two DBs locallay, you will need to create two files, one called '.env.test' and another called '.env.development' - they should be in the root directory. In each of these files, you can then specify which PGDATABASE can connect to which. You can find the names of the DBs by looking into the db/setup.sql file. An example of the development file will look like is 'PGDATABASE=shop_records' and for the test file 'PGDATABASE=shop_records_test'.
