@@ -1,45 +1,45 @@
-## Link to hosted site (may be a little slow): https://gamesmarsncapi.onrender.com/api 
+# GamesMarsnC API
+Welcome to the GamesMarsnC API, a project built with Express, MVC architecture, Jest, Supertest, and JavaScript. This API provides users with information about game reviews through robust endpoints.
 
-# Summary of project:
+## Hosted Site
+Visit the hosted site here (may take a moment to load).
 
-This is an API project using express, MVC architecture, jest, supertests and JS to create robust endpoints which give the user information regarding the game's reviews. 
+## Getting Started
+### Clone the Repository
+To clone the repository, simply click on the blue "clone" button on GitHub and copy the HTTPS link. Then, in your IDE's terminal, enter the command "git clone" followed by the copied link.
 
-# How to create the env files:
+### Install Dependencies and Dev Dependencies
+To install dependencies and dev dependencies, enter the command "npm install" in your terminal. The dependencies and dev dependencies will be automatically placed in their respective sections in the package.json file.
 
-In order to connect to the two DBs locallay, you will need to create two files, one called '.env.test' and another called '.env.development' - they should be in the root directory. In each of these files, you can then specify which PGDATABASE can connect to which. You can find the names of the DBs by looking into the db/setup.sql file. An example of the development file will look like is 'PGDATABASE=shop_records' and for the test file 'PGDATABASE=shop_records_test'.
-
-# How to clone:
-
-Click on the blue clone button on Github and copy the HTTPS, then in your IDE's terminal, type "git clone <paste here>" and hit enter.
-
-  How to install dependencies and dev dependencies:
 ## Dependencies
-- cors: ^2.8.5
-- dotenv: ^16.0.0
-- express: ^4.18.2
-- pg: ^8.7.3
-- supertest: ^6.3.3
+cors: ^2.8.5
+
+dotenv: ^16.0.0
+
+express: ^4.18.2
+
+pg: ^8.7.3
+
+supertest: ^6.3.3
 
 ## Development Dependencies
-- husky: ^8.0.2
-- jest: ^27.5.1
-- jest-extended: ^2.0.0
-- pg-format: ^1.0.4
+husky: ^8.0.2
 
-Enter the command "npm install <dependencies name>" and hit enter. Repeat for each. Dependencies and dev dependencies should be automatically placed into their correct object in the json file. 
+jest: ^27.5.1
 
-# How to seed local data:
-  
-Enter the command "npm run setup-dbs" and hit enter. Then enter the command "npm run seed" and hit enter again.
+jest-extended: ^2.0.0
 
+pg-format: ^1.0.4
 
-# How to run tests:
-  
-The commend in the terminal "npm t" will run all the tests in the "__test__" file. To speciify a c file to run tests on only, run "npm t ./__test__/<fileName>.test.js"
+Create .env Files
+To connect to the two DBs locally, you will need to create two files: .env.test and .env.development, which should be placed in the root directory. In each of these files, specify which PGDATABASE can connect to which. You can find the names of the DBs by looking into the db/setup.sql file. An example of the development file will look like this: PGDATABASE=shop_records, and for the test file: PGDATABASE=shop_records_test.
 
+## Seed Local Data
+To seed local data, enter the command "npm run setup-dbs" in your terminal and hit enter. Then, enter the command "npm run seed" and hit enter again.
 
-Minium Node version:
-v19.6.0
+## Running Tests
+To run all tests in the "test" file, enter the command "npm t" in your terminal. To run tests for a specific file, run "npm t ./test/.test.js" followed by the file name.
 
-Minium PostgreSQL version:
-14.7
+## Minimum Requirements
+Node version: v19.6.0
+PostgreSQL version: 14.7
