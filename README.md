@@ -14,7 +14,12 @@ Click on the blue clone button on Github and copy the HTTPS, then in your IDE's 
 
   How to install dependencies and dev dependencies:
   The dependencies needed are: dotenv, express, pg and supertes. 
-  The dev dependencies are: husky, jest, jest-extended and pg-format.
+  The dev dependencies are: 
+
+- husky
+- jest
+- jest-extended
+- pg-format.
 
 Enter the command "npm install <dependencies name>" and hit enter. Repeat for each. Dependencies and dev dependencies should be automatically placed into their correct object in the json file. 
 
